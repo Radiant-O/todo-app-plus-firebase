@@ -57,7 +57,7 @@ class="card mb-5"
 <script setup>
 import { ref, onMounted } from 'vue'
 import { db } from '@/Firebase'
-import { collection, onSnapshot, addDoc, deleteDoc, doc} from 'firebase/firestore'
+import { collection, onSnapshot, addDoc, deleteDoc, doc, updateDoc} from 'firebase/firestore'
 
 
 // todos
@@ -113,7 +113,11 @@ id));
 //toggledone
 const toggleDone = id => {
   const index =todos.value.findIndex(todo => todo.id === id)
-  todos.value[index].done = !todos.value[index].done
+
+
+ updateDoc(doc(collection(db, "todos"), id), {
+  done: !todos.value[index].done
+});
 }
 </script>
 
