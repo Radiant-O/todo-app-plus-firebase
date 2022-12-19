@@ -55,8 +55,9 @@ class="card mb-5"
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { v4 as uuidv4 } from 'uuid';
+import { ref, onMounted } from 'vue'
+import { db } from '@/Firebase'
+import { collection, onSnapshot, addDoc, deleteDoc, doc} from 'firebase/firestore'
 
 
 // todos
@@ -73,21 +74,41 @@ const todos = ref([
   // }
 ])
 
+/*get todo*/
+
+onMounted (()=>{
+onSnapshot(collection(db, "todos"), (querySnapshot) => {
+  const mytodo = []
+  querySnapshot.forEach((doc) => {
+    const todo = {
+    id: doc.id,
+    content: doc.data().content,
+    done: doc.data().done
+  }
+  mytodo.push(todo)
+})
+todos.value = mytodo 
+  })
+ 
+})
+
+
 const newContent = ref("")
 // add todo
 const addTodo = () => {
-  const newTodo = {
-    id: uuidv4(),
-    content:newContent.value,
-    done: false
-  }
-  todos.value.unshift(newTodo)
+
+ addDoc(collection(db, "todos"), {
+  content: newContent.value,
+  done: false
+})
   newContent.value = ""
 }
 
 //delete todo
 const deleteTodo = id => {
-  todos.value = todos.value.filter(todo => todo.id != id)
+  deleteDoc(doc(collection(db, "todos"),
+id));
+  
 }
 //toggledone
 const toggleDone = id => {
