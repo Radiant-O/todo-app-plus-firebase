@@ -1,6 +1,7 @@
-# learn-pinia-state
+# A Todo with Firebase Tutorial
 
-This template should help get you started developing with Vue 3 in Vite.
+### A todo app is built in the app, you can create, delete, edit your todo.
+### The todos is store at firebase you can logon anywhere to see your todo.
 
 ## Recommended IDE Setup
 
